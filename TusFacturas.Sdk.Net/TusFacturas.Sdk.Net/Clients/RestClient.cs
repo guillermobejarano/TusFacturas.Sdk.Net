@@ -24,12 +24,9 @@ namespace Tusfacturas.Sdk.Net.Clients
             this.endpoint = endpoint;
             this.headers = new Dictionary<string, string>();
 
-            if (headers != null)
+            foreach (var key in headers?.Keys)
             {
-                foreach (var key in headers.Keys)
-                {
-                    this.headers.Add(key, headers[key]);
-                }
+                this.headers.Add(key, headers[key]);
             }
         }
 
@@ -40,12 +37,9 @@ namespace Tusfacturas.Sdk.Net.Clients
 
         public void AddHeaders(Dictionary<string, string> headers)
         {
-            if (headers != null)
+            foreach (var key in headers?.Keys)
             {
-                foreach (var key in headers.Keys)
-                {
-                    this.headers.Add(key, headers[key]);
-                }
+                this.headers.Add(key, headers[key]);
             }
         }
 
@@ -71,7 +65,6 @@ namespace Tusfacturas.Sdk.Net.Clients
 
             if (!string.IsNullOrEmpty(data))
             {
-                var encoding = new UTF8Encoding();
                 var bytes = Encoding.GetEncoding("iso-8859-1").GetBytes(data);
                 httpWebRequest.ContentLength = bytes.Length;
 
@@ -101,7 +94,6 @@ namespace Tusfacturas.Sdk.Net.Clients
 
             if (!string.IsNullOrEmpty(data))
             {
-                var encoding = new UTF8Encoding();
                 var bytes = Encoding.GetEncoding("iso-8859-1").GetBytes(data);
                 httpWebRequest.ContentLength = bytes.Length;
 
@@ -121,7 +113,7 @@ namespace Tusfacturas.Sdk.Net.Clients
 
             httpWebRequest.ContentLength = 0;
 
-            if (!String.IsNullOrEmpty(contentType))
+            if (!string.IsNullOrEmpty(contentType))
                 httpWebRequest.ContentType = contentType;
             else
                 httpWebRequest.ContentType = CONTENT_TYPE_APP_JSON;
@@ -134,7 +126,7 @@ namespace Tusfacturas.Sdk.Net.Clients
         protected RestResponse DoRequest(HttpWebRequest httpWebRequest)
         {
             RestResponse result = new RestResponse();
-            result.Response = String.Empty;
+            result.Response = string.Empty;
 
             try
             {

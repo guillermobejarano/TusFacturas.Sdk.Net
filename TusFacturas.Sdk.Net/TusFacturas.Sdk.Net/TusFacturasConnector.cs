@@ -1,5 +1,4 @@
-﻿using System;
-using Tusfacturas.Sdk.Net.Services;
+﻿using Tusfacturas.Sdk.Net.Services;
 
 namespace Tusfacturas.Sdk.Net
 {
@@ -19,13 +18,12 @@ namespace Tusfacturas.Sdk.Net
         private const string endPointProd = "urlProd";
         #endregion
 
+        private readonly BillingService billingService;
+
         private string privateApiKey;
         private string publicApiKey;
         private int ambiente;
-        private string endpoint;
-
-        //private HealthCheck healthCheckService;
-        private BillingService billingService;
+        private string endpoint;        
 
         public TusFacturasConnector(int ambiente, string privateApiKey, string publicApiKey)
         {
@@ -33,27 +31,10 @@ namespace Tusfacturas.Sdk.Net
             this.privateApiKey = privateApiKey;
             this.publicApiKey = publicApiKey;
 
-            if (ambiente == EnviromentApi.ENVIROMENT_PRODUCCION)
-            {
-                this.endpoint = endPointProd;
-            }
-            else
-            {
-                this.endpoint = endPointSandbox;
-            }
+            if (ambiente == EnviromentApi.ENVIROMENT_PRODUCCION) this.endpoint = endPointProd;
+            else this.endpoint = endPointSandbox;
 
-            //this.healthCheckService = new HealthCheck(this.endpoint);
             this.billingService = new BillingService(this.endpoint, this.privateApiKey);
         }
-
-        //public HealthCheckResponse HealthCheck()
-        //{
-        //    return this.healthCheckService.Execute();
-        //}
-
-        //public PaymentResponse Payment(Payment payment)
-        //{
-        //    return this.paymentService.ExecutePayment(payment);
-        //}
     }
 }
