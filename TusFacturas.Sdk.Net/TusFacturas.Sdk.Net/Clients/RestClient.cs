@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Tusfacturas.Sdk.Net.Clients
 {
-    internal class RestClient
+    public class RestClient
     {
         protected string endpoint;
         protected Dictionary<string, string> headers;

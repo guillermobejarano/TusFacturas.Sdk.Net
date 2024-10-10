@@ -3,7 +3,7 @@ using Tusfacturas.Sdk.Net.Clients;
 
 namespace Tusfacturas.Sdk.Net.Services
 {
-    internal class Service
+    public class Service
     {
         protected string endpoint;
         protected RestClient restClient;

@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Tusfacturas.Sdk.Net.Model.Requests
 {
-    internal class BillingAsyncOneRequest : AuthRequest
+    public class BillingAsyncOneRequest : AuthRequest
     {
         [JsonProperty("comprobante")]
         [JsonPropertyName("comprobante")]

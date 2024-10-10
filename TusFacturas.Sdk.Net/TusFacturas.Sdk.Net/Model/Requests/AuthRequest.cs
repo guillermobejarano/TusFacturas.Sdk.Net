@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Tusfacturas.Sdk.Net.Model.Requests
 {
-    internal class AuthRequest
+    public class AuthRequest
     {
         [JsonProperty("usertoken")]
         [JsonPropertyName("usertoken")]
