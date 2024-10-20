@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Tusfacturas.Sdk.Net.Model.Requests
 {
-    internal class BillingAsyncBatchRequest : AuthRequest
+    public class BillingAsyncBatchRequest : AuthRequest
     {
         [JsonProperty("requests")]
         [JsonPropertyName("requests")]

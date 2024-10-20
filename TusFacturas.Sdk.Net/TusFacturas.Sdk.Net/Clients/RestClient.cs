@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Tusfacturas.Sdk.Net.Clients
 {
@@ -75,6 +76,23 @@ namespace Tusfacturas.Sdk.Net.Clients
             }
 
             return DoRequest(httpWebRequest);
+        }
+
+        public async Task<RestResponse> PostAsync(string url, string data)
+        {
+            string uri = endpoint + url;
+
+            var httpWebRequest = Initialize(uri, METHOD_POST);
+
+            if (string.IsNullOrEmpty(data))
+            {
+                var bytes = Encoding.GetEncoding("iso-8859-1").GetBytes(data);
+                httpWebRequest.ContentLength = bytes.Length;
+
+                using (var writeStream = await httpWebRequest.GetRequestStreamAsync())
+                    await writeStream.WriteAsync(bytes, 0, bytes.Length);
+            }
+            return await DoRequestAsync(httpWebRequest);
         }
 
         public RestResponse Delete(string url)
@@ -167,6 +185,69 @@ namespace Tusfacturas.Sdk.Net.Clients
                             using (var reader = new StreamReader(responseStream))
                             {
                                 result.Response = reader.ReadToEnd();
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    result.StatusCode = 0;
+                    result.Response = ex.Message;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.StatusCode = 0;
+                result.Response = ex.Message;
+            }
+
+            return result;
+        }
+
+        protected  async Task<RestResponse> DoRequestAsync(HttpWebRequest httpWebRequest)
+        {
+            RestResponse result = new RestResponse();
+            result.Response = string.Empty;
+
+            try
+            {
+                using (var response = (HttpWebResponse)await httpWebRequest.GetResponseAsync())
+                {
+                    result.StatusCode = ((int)response.StatusCode);
+
+                    if (response.StatusCode != HttpStatusCode.OK && response.StatusCode != HttpStatusCode.Created
+                        && response.StatusCode != HttpStatusCode.NoContent)
+                    {
+                        var message = String.Format("Request failed. Received HTTP {0}", response.StatusCode);
+                        result.Response = message;
+                    }
+                    else
+                    {
+                        using (var responseStream = response.GetResponseStream())
+                        {
+                            if (responseStream != null)
+                            {
+                                using (var reader = new StreamReader(responseStream))
+                                {
+                                    result.Response = await reader.ReadToEndAsync();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (WebException ex)
+            {
+                if (ex.Status == WebExceptionStatus.ProtocolError)
+                {
+                    result.StatusCode = (int)((HttpWebResponse)ex.Response).StatusCode;
+                    using (var responseStream = ((HttpWebResponse)ex.Response).GetResponseStream())
+                    {
+                        if (responseStream != null)
+                        {
+                            using (var reader = new StreamReader(responseStream))
+                            {
+                                result.Response = await reader.ReadToEndAsync();
                             }
                         }
                     }

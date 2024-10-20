@@ -4,3 +4,5 @@
 
 /.vs
 /TusFacturas.Sdk.Net/TusFacturas.Sdk.Net/obj
+/TusFacturas.Sdk.Net/.vs
+/TusFacturas.Sdk.Net/TusFacturas.Sdk.Net/bin/Debug/netstandard2.0
