@@ -84,7 +84,7 @@ namespace Tusfacturas.Sdk.Net.Clients
 
             var httpWebRequest = Initialize(uri, METHOD_POST);
 
-            if (string.IsNullOrEmpty(data))
+            if (!string.IsNullOrEmpty(data))
             {
                 var bytes = Encoding.GetEncoding("iso-8859-1").GetBytes(data);
                 httpWebRequest.ContentLength = bytes.Length;

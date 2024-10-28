@@ -7,6 +7,6 @@ namespace Tusfacturas.Sdk.Net.Model.Requests
     {
         [JsonProperty("requests")]
         [JsonPropertyName("requests")]
-        public Receipt[] Receipts { get; set; }
+        public BillingAsyncOneRequest[] Receipts { get; set; }
     }
 }
