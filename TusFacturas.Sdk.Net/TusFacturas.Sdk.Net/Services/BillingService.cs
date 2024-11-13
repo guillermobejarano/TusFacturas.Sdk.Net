@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Tusfacturas.Sdk.Net.Clients;
+using Tusfacturas.Sdk.Net.Exceptions;
+using Tusfacturas.Sdk.Net.Model.ErrorResponses;
 using Tusfacturas.Sdk.Net.Model.Requests;
 using Tusfacturas.Sdk.Net.Model.Responses;
 
@@ -114,11 +116,11 @@ namespace Tusfacturas.Sdk.Net.Services
                 response = JsonConvert.DeserializeObject<BillingResponse>(result.Response);
             }
 
-            //response.statusCode = result.StatusCode;
-
-            if (result.StatusCode != STATUS_CREATED)
+            if (response.Error?.Contains("S") == true)
             {
-                throw new Exception(result.StatusCode.ToString());
+                var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(result.Response);
+
+                throw new ResponseException(errorResponse);
             }
 
             return response;
@@ -194,11 +196,11 @@ namespace Tusfacturas.Sdk.Net.Services
                 response = JsonConvert.DeserializeObject<BillingResponse>(result.Response);
             }
 
-            //response.statusCode = result.StatusCode;
-
-            if (result.StatusCode != STATUS_CREATED)
+            if (response.Error?.Contains("S") == true)
             {
-                throw new Exception(result.StatusCode.ToString());
+                var errorResponse = JsonConvert.DeserializeObject<ErrorResponse>(result.Response);
+
+                throw new ResponseException(errorResponse);
             }
 
             return response;
