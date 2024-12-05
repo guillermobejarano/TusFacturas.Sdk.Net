@@ -1,5 +1,8 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Text.Json.Serialization;
+using Tusfacturas.Sdk.Net.Model.Enum;
 
 namespace Tusfacturas.Sdk.Net.Model
 {
@@ -21,13 +24,19 @@ namespace Tusfacturas.Sdk.Net.Model
         [JsonPropertyName("email")]
         public string Email { get; set; }
 
+        
         [JsonProperty("domicilio")]
         [JsonPropertyName("domicilio")]
         public string Domicilio { get; set; }
 
+        private string _provincia;
         [JsonProperty("provincia")]
         [JsonPropertyName("provincia")]
-        public string Provincia { get; set; }
+        public string Provincia
+        {
+            get => GetIntFromEnumName(_provincia.ToUpper().Replace(" ", string.Empty));
+            set => _provincia = value;
+        }
 
         [JsonProperty("envia_por_mail")]
         [JsonPropertyName("envia_por_mail")]
@@ -60,5 +69,26 @@ namespace Tusfacturas.Sdk.Net.Model
         [JsonProperty("rg5329")]
         [JsonPropertyName("rg5329")]
         public string Rg5329 { get; set; }
+
+        [JsonProperty("codigo")]
+        [JsonPropertyName("codigo")]
+        public string Codigo { get; set; }
+
+        private string GetIntFromEnumName(string name)
+        {
+            try
+            {
+                return ((int)System.Enum.Parse(typeof(Provincias), name)).ToString();
+            }
+            catch (Exception)
+            {
+                return ((int)Provincias.Otro).ToString();
+            }            
+        }
+
+        private string GetEnumNameFromInt(int value)
+        {
+            return System.Enum.GetName(typeof(Provincias), (Provincias)value);
+        }
     }
 }

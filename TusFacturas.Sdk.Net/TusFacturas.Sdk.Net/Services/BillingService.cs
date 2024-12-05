@@ -25,8 +25,6 @@ namespace Tusfacturas.Sdk.Net.Services
         private readonly string _userToken;
         private readonly string _apiKey;
         private readonly string _apiToken;
-        //private readonly BillingAsyncOneRequest _billingAsyncOneRequest;
-
 
         public BillingService(string endpoint, string apiKey, string apiToken, string userToken) : base(endpoint)
         {
@@ -35,8 +33,6 @@ namespace Tusfacturas.Sdk.Net.Services
             _apiToken = apiToken;
 
             var headers = new Dictionary<string, string>();
-            //headers.Add("apikey", this.privateApiKey);
-            //headers.Add("Cache-Control", "no-cache");
 
             this.restClient = new RestClient(this.endpoint, headers, CONTENT_TYPE_APP_JSON);
         }
@@ -55,7 +51,6 @@ namespace Tusfacturas.Sdk.Net.Services
                 item.ApiToken = _apiToken;
                 item.UserToken = _userToken;
             }
-
 
             #region Validaciones
             //Comprobamos que la lista contenga elementos
@@ -171,8 +166,6 @@ namespace Tusfacturas.Sdk.Net.Services
                 response = JsonConvert.DeserializeObject<BillingBatchResponse>(result.Response);
             }
 
-            //response.statusCode = result.StatusCode;
-
             if (result.StatusCode != STATUS_CREATED)
             {
                 throw new Exception(result.StatusCode.ToString());
@@ -204,6 +197,10 @@ namespace Tusfacturas.Sdk.Net.Services
             }
 
             return response;
+        }
+        private decimal RoundToTwoDecimals(decimal number)
+        {
+            return Math.Round(number, 2, MidpointRounding.ToEven);
         }
     }
 }
